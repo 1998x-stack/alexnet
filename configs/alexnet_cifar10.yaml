@@ -1,0 +1,43 @@
+SEED: 42
+MODEL:
+  name: alexnet
+  num_classes: 10
+  kwargs:
+    num_classes: 10
+    use_lrn: true
+    overlap_pool: true
+    dropout_p: 0.5
+    init_bias_ones: true
+    width_mult: 1.0
+DATA:
+  engine: cifar10
+  train_dir: ./data/cifar10
+  hf_name_or_dir: ""
+  img_size: 224
+  workers: 4
+AUG:
+  lighting: true
+  lighting_std: 0.05
+  hflip_p: 0.5
+  mean: [0.4914,0.4822,0.4465]
+  std:  [0.2470,0.2435,0.2616]
+  warp_square_256: false
+TRAIN:
+  epochs: 60
+  batch_size: 128
+  lr: 0.01
+  weight_decay: 0.0005
+  optimizer:
+    name: sgd
+  scheduler:
+    name: multistep
+    milestones: [25, 45, 55]
+    gamma: 0.1
+  amp: true
+  grad_clip: 0.0
+EVAL:
+  ten_crop: false
+OUTPUT:
+  log_dir: runs/cifar10/logs
+  tb_dir: runs/cifar10/tb
+  ckpt_dir: runs/cifar10/ckpts

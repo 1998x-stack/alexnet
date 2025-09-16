@@ -1,0 +1,43 @@
+SEED: 42
+MODEL:
+  name: alexnet
+  num_classes: 1000
+  kwargs:
+    num_classes: 1000
+    use_lrn: true
+    overlap_pool: true
+    dropout_p: 0.5
+    init_bias_ones: true
+    width_mult: 1.0
+DATA:
+  engine: imagefolder     # imagefolder | hf_imagefolder | cifar10 | imagenette
+  train_dir: /data/imagenet
+  hf_name_or_dir: imagenet-1k # 若使用 hf_imagefolder 时生效（占位）
+  img_size: 224
+  workers: 8
+AUG:
+  lighting: true
+  lighting_std: 0.1
+  hflip_p: 0.5
+  mean: [0.485, 0.456, 0.406]
+  std:  [0.229, 0.224, 0.225]
+  warp_square_256: false   # 若想与部分复现对齐，可置 true 强制拉伸到 256x256
+TRAIN:
+  epochs: 90
+  batch_size: 128
+  lr: 0.01
+  weight_decay: 0.0005
+  optimizer:
+    name: sgd
+  scheduler:
+    name: multistep
+    milestones: [30, 60, 80]
+    gamma: 0.1
+  amp: true
+  grad_clip: 0.0
+EVAL:
+  ten_crop: false          # 若要严格 10-crop, 可在 evaluator 替换，或将 dataset 暴露 raw PIL
+OUTPUT:
+  log_dir: runs/imagenet/logs
+  tb_dir: runs/imagenet/tb
+  ckpt_dir: runs/imagenet/ckpts
