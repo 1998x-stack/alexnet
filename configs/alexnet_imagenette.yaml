@@ -10,12 +10,12 @@ MODEL:
     init_bias_ones: true
     width_mult: 1.0
 DATA:
-  engine: hf_imagefolder
-  # 官方镜像（如）："frgfm/imagenette" 可能提供 splits: train/validation
+  engine: imagenette            # ★ 改为 imagenette（内部用 train/validation）
   hf_name_or_dir: frgfm/imagenette
-  train_dir: ./data/imagenette
+  train_dir: ./data/imagenette  # 仅本地 imagefolder 时使用
   img_size: 224
   workers: 4
+  val_split: validation         # 若强制用 hf_imagefolder，可用该项指定
 AUG:
   lighting: true
   lighting_std: 0.1
